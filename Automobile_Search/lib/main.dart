@@ -1,8 +1,8 @@
 
 import 'package:flutter/material.dart';
+import 'package:carismatic/ui/splash_screen.dart';
 
-
-import 'package:carismatic/ui/authentication/signin.dart';
+// import 'package:carismatic/ui/authentication/signin.dart';
 void main() async {
   // WidgetsFlutterBinding.ensureInitialized();
   // await Firebase.initializeApp();
@@ -20,7 +20,7 @@ class MyApp   extends StatelessWidget {
     return const MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Automobile Search',
-      home: SigninPage(),
+      home: SplashScreenPage(),
     );
   }
 }

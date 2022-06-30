@@ -33,8 +33,8 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
           padding: const EdgeInsets.fromLTRB(30, 120, 30, 30),
           children: <Widget>[
             Center(
-                child: Image.asset('assets/logo.png',
-                    height: 32)),
+                child: Image.asset('assets/logo.jpeg',
+                    height: 140)),
             const SizedBox(
               height: 80,
             ),

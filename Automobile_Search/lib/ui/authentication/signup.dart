@@ -59,8 +59,8 @@ class _SignupPageState extends State<SignupPage> {
             padding: const EdgeInsets.fromLTRB(30, 120, 30, 30),
             children: <Widget>[
               Center(
-                  child: Image.asset('assets/logo.png',
-                      height: 32)),
+                  child: Image.asset('assets/logo.jpeg',
+                      height: 140)),
               const SizedBox(
                 height: 40,
               ),

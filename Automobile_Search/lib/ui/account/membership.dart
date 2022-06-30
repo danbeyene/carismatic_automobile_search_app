@@ -39,7 +39,7 @@ class _MembershipPageState extends State<MembershipPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
-            _carismaticLogo(),
+            _userPhoto(),
             _carismatic(),
             _currentPlan(),
             _infoBox(),
@@ -232,7 +232,7 @@ class _MembershipPageState extends State<MembershipPage> {
     );
   }
 
-  Widget _carismaticLogo() {
+  Widget _userPhoto() {
     final double profilePictureSize = MediaQuery.of(context).size.width/3;
     return Align(
       alignment: Alignment.center,
@@ -252,19 +252,7 @@ class _MembershipPageState extends State<MembershipPage> {
                   ),
                 ),
               ),
-              // create edit icon in the picture
-              Container(
-                width: 30,
-                height: 30,
-                margin: EdgeInsets.only(top: 0, left: MediaQuery.of(context).size.width/4),
-                child: Card(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(30),
-                  ),
-                  elevation: 1,
-                  child: const Icon(Icons.edit, size: 12, color: CHARCOAL),
-                ),
-              ),
+
 
 
             ],
