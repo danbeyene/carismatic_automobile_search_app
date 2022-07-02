@@ -1,14 +1,13 @@
 import 'dart:convert';
 import 'package:carismatic/animation/fadeAnimation.dart';
 import 'package:carismatic/model/automobile.dart';
-import 'package:carismatic/ui/home/automobile_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:carismatic/constants/constant.dart';
 
 
 import 'package:carismatic/model/search_model.dart';
-import 'package:carismatic/ui/home/destination.dart';
 import 'package:carismatic/ui/reusable/cache_image_network.dart';
 import 'package:carismatic/ui/reusable/global_function.dart';
 import 'package:carismatic/ui/reusable/global_widget.dart';
@@ -22,6 +21,8 @@ class TabHomePage extends StatefulWidget {
 }
 
 class _TabHomePageState extends State<TabHomePage> with TickerProviderStateMixin {
+  DateTime _selectedDate = DateTime.now(), initialDate = DateTime.now();
+  TextEditingController _etDate = TextEditingController();
 
   // initialize global widget
   final _globalWidget = GlobalWidget();
@@ -79,6 +80,7 @@ class _TabHomePageState extends State<TabHomePage> with TickerProviderStateMixin
 
   @override
   void initState() {
+    _etDate = TextEditingController(text: _selectedDate.toLocal().toString().split(' ')[0]);
     _scrollController = ScrollController();
     _scrollController.addListener(_listenToScrollChange);
     automobiles();
@@ -91,6 +93,7 @@ class _TabHomePageState extends State<TabHomePage> with TickerProviderStateMixin
   @override
   void dispose() {
     _etSearch.dispose();
+    _etDate.dispose();
 
     super.dispose();
   }
@@ -218,7 +221,7 @@ class _TabHomePageState extends State<TabHomePage> with TickerProviderStateMixin
                                 prefixIcon: Icon(Icons.search, color: Colors.black),
                                 border: OutlineInputBorder(),
                                 hintText: 'Search Automobile',
-                              hintStyle:TextStyle(fontSize: 20.0, color: Colors.green, )
+                              hintStyle:TextStyle(fontSize: 20.0, color: PRIMARY_COLOR, )
                             ),
 
                           ),
@@ -232,11 +235,11 @@ class _TabHomePageState extends State<TabHomePage> with TickerProviderStateMixin
                                   BorderRadius.all(const Radius.circular(4)),
                                   child: buildCacheNetworkImage(width: boxImageSize, height: boxImageSize, url: suggestion.imageURL)),
                               title: Text(suggestion.name),
-                              subtitle: Text('\$ '+_globalFunction.removeDecimalZeroFormat(suggestion.price)),
                             );
                           },
                           onSuggestionSelected: (SearchModel suggestion) {
-                            Navigator.push(context, MaterialPageRoute(builder: (context) => DestinationPage(searchData: suggestion)));
+                            //Navigator.push(context, MaterialPageRoute(builder: (context) => DestinationPage(searchData: suggestion)));
+                            Fluttertoast.showToast(msg: 'click suggestion', toastLength: Toast.LENGTH_SHORT);
                           },
                         ),
                       ),
@@ -448,7 +451,8 @@ class _TabHomePageState extends State<TabHomePage> with TickerProviderStateMixin
       aspectRatio: 1 / 1,
       child: FadeAnimation(1.5, GestureDetector(
         onTap: () {
-          Navigator.push(context, MaterialPageRoute(builder: (context) => AutomobileViewPage(automobile: automobile,)));
+          //Navigator.push(context, MaterialPageRoute(builder: (context) => AutomobileViewPage(automobile: automobile,)));
+          Fluttertoast.showToast(msg: 'click Automobile', toastLength: Toast.LENGTH_SHORT);
         },
         child: Container(
           margin: const EdgeInsets.only(right: 20, bottom: 25),
@@ -507,9 +511,7 @@ class _TabHomePageState extends State<TabHomePage> with TickerProviderStateMixin
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(automobile.brand, style: TextStyle(color: Colors.orange.shade400, fontSize: 14,),),
-                  Text("\$ " +automobile.price.toString() + '.00',
-                    style: const TextStyle(color: Colors.black, fontSize: 18, fontWeight: FontWeight.w800),
-                  ),
+
                 ],
               ),
             ],
@@ -555,9 +557,6 @@ class _TabHomePageState extends State<TabHomePage> with TickerProviderStateMixin
                     const SizedBox(height: 5,),
                     Text(automobile.brand, style: TextStyle(color: Colors.orange.shade400, fontSize: 13,),),
                     const SizedBox(height: 10,),
-                    Text("\$ " +automobile.price.toString() + '.00',
-                      style: const TextStyle(color: Colors.black, fontSize: 18, fontWeight: FontWeight.w800),
-                    ),
                   ]
               ),
             )
@@ -586,7 +585,7 @@ class _TabHomePageState extends State<TabHomePage> with TickerProviderStateMixin
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        const Text('Filter', style: TextStyle(color: Colors.black, fontSize: 23, fontWeight: FontWeight.bold),),
+                        const Text('Save', style: TextStyle(color: Colors.black, fontSize: 23, fontWeight: FontWeight.bold),),
                         MaterialButton(
                           onPressed: () {
                             Navigator.pop(context);
@@ -656,60 +655,36 @@ class _TabHomePageState extends State<TabHomePage> with TickerProviderStateMixin
                     ),
                     const SizedBox(height: 10,),
                     // date filter
-                    const Text('Year', style: TextStyle(color: Colors.black, fontSize: 18, fontWeight: FontWeight.bold),),
+                    const Text('Date', style: TextStyle(color: Colors.black, fontSize: 18, fontWeight: FontWeight.bold),),
                     const SizedBox(height: 5,),
                     Container(
                       margin: const EdgeInsets.symmetric(vertical: 8),
-                      child: DropdownButtonFormField<String>(
-                        decoration: const InputDecoration(
-                          border: OutlineInputBorder(),
-                        ),
-                        hint: const Text("Select Year"),
-                        value: _valYear,
-                        items: _yearList.map((value) {
-                          return DropdownMenuItem<String>(
-                            value: value,
-                            child: Text(value),
-                          );
-                        }).toList(),
-                        onChanged: (String? value) {
-                          setState(() {
-                            _valYear = value!;
-                          });
+                      child: TextField(
+                        controller: _etDate,
+                        readOnly: true,
+                        onTap: () {
+                          _selectDate(context);
                         },
+                        maxLines: 1,
+                        cursorColor: Colors.grey[600],
+                        style: const TextStyle(color: CHARCOAL),
+                        decoration: const InputDecoration(
+                          isDense: true,
+                          suffixIcon: Icon(Icons.date_range, color: PRIMARY_COLOR),
+                          enabledBorder: UnderlineInputBorder(
+                            borderSide: BorderSide(color: Color(0xFFCCCCCC)),
+                          ),
+                          focusedBorder: UnderlineInputBorder(
+                              borderSide:
+                              BorderSide(color: PRIMARY_COLOR, width: 2.0)),
+                          labelText: 'Select Date',
+                          labelStyle: TextStyle(fontSize: 22 ,color: BLACK_GREY),
+                        ),
                       ),
                     ),
-                    // Slider Price Renge filter
-                    const SizedBox(height: 10,),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        const Text('Price Range', style: TextStyle(color: Colors.black, fontSize: 18, fontWeight: FontWeight.bold),),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            Text('\$ ${selectedRange.start.toStringAsFixed(2)}', style: TextStyle(color: Colors.grey.shade500, fontSize: 12),),
-                            Text(" - ", style: TextStyle(color: Colors.grey.shade500)),
-                            Text('\$ ${selectedRange.end.toStringAsFixed(2)}', style: TextStyle(color: Colors.grey.shade500, fontSize: 12),),
-                          ],
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 5,),
-                    RangeSlider(
-                        values: selectedRange,
-                        min: 0.00,
-                        max: 2000.00,
-                        divisions: 100,
-                        inactiveColor: Colors.grey.shade300,
-                        activeColor: Colors.yellow[800],
-                        labels: RangeLabels('\$ ${selectedRange.start.toStringAsFixed(2)}', '\$ ${selectedRange.end.toStringAsFixed(2)}',),
-                        onChanged: (RangeValues values) {
-                          setState(() => selectedRange = values);
-                        }
-                    ),
+
                     const SizedBox(height: 15,),
-                    button('Filter', () {})
+                    button('Save', () {})
                   ],
                 ),
               );
@@ -729,11 +704,36 @@ class _TabHomePageState extends State<TabHomePage> with TickerProviderStateMixin
       shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10)
       ),
-      color: Colors.yellow[800],
+      color: PRIMARY_COLOR,
       child: Center(
         child: Text(text, style: const TextStyle(color: Colors.white, fontSize: 18),),
       ),
     );
+  }
+  Future<Null> _selectDate(BuildContext context) async {
+    final DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: _selectedDate,
+      firstDate: DateTime(1900),
+      lastDate: DateTime(2025),
+      builder: (BuildContext context, Widget? child) {
+        return Theme(
+          data: ThemeData.light().copyWith(
+            primaryColor: PRIMARY_COLOR,
+            colorScheme: const ColorScheme.light(primary: PRIMARY_COLOR, secondary: PRIMARY_COLOR),
+            buttonTheme: const ButtonThemeData(textTheme: ButtonTextTheme.primary),
+          ),
+          child: child!,
+        );
+      },
+    );
+    if (picked != null && picked != _selectedDate) {
+      setState(() {
+        _selectedDate = picked;
+        _etDate = TextEditingController(
+            text: _selectedDate.toLocal().toString().split(' ')[0]);
+      });
+    }
   }
 }
 

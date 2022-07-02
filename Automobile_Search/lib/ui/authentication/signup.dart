@@ -186,7 +186,7 @@ class _SignupPageState extends State<SignupPage> {
                   style: const TextStyle(color: CHARCOAL),
                   decoration: const InputDecoration(
                     isDense: true,
-                    suffixIcon: Icon(Icons.date_range, color: Colors.pinkAccent),
+                    suffixIcon: Icon(Icons.date_range, color: PRIMARY_COLOR),
                     enabledBorder: UnderlineInputBorder(
                       borderSide: BorderSide(color: Color(0xFFCCCCCC)),
                     ),
@@ -290,8 +290,8 @@ class _SignupPageState extends State<SignupPage> {
       builder: (BuildContext context, Widget? child) {
         return Theme(
           data: ThemeData.light().copyWith(
-            primaryColor: Colors.pinkAccent,
-            colorScheme: const ColorScheme.light(primary: Colors.pinkAccent, secondary: Colors.pinkAccent),
+            primaryColor: PRIMARY_COLOR,
+            colorScheme: const ColorScheme.light(primary: PRIMARY_COLOR, secondary: PRIMARY_COLOR),
             buttonTheme: const ButtonThemeData(textTheme: ButtonTextTheme.primary),
           ),
           child: child!,

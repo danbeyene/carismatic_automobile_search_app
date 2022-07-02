@@ -37,7 +37,7 @@ class GlobalWidget{
       backgroundColor: Colors.white,
       systemOverlayStyle: SystemUiOverlayStyle.dark,
       centerTitle: true,
-      title: Image.asset('assets/logo.png', height: 24),
+      title: Image.asset('assets/logo.jpeg', height: 30),
       bottom: PreferredSize(
           preferredSize: const Size.fromHeight(1.0),
           child: Container(

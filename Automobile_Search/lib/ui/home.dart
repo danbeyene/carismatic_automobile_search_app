@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:carismatic/ui/account/tab_account.dart';
 import 'package:carismatic/ui/home/tab_home.dart';
 import 'package:flashy_tab_bar2/flashy_tab_bar2.dart';
+import 'package:carismatic/constants/constant.dart';
 
 
 class HomePage extends StatefulWidget {
@@ -52,11 +53,11 @@ class _HomePageState extends State<HomePage> {
         onItemSelected: (index) => _onItemTapped(index),
         items: [
           FlashyTabBarItem(
-            icon: const Icon(Icons.home_outlined, size: 23, color: Colors.green,),
+            icon: const Icon(Icons.home_outlined, size: 23, color: PRIMARY_COLOR,),
             title: const Text('Home'),
           ),
           FlashyTabBarItem(
-            icon: const Icon(Icons.account_circle_outlined, size: 23, color: Colors.green,),
+            icon: const Icon(Icons.account_circle_outlined, size: 23, color: PRIMARY_COLOR,),
             title: const Text('Account',),
           ),
         ],

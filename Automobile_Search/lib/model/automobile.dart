@@ -4,9 +4,8 @@ class Automobile {
   final String date;
   final String brand;
   final String imageURL;
-  final int price;
 
-  Automobile(this.name, this.brand, this.model, this.date, this.imageURL, this.price);
+  Automobile(this.name, this.brand, this.model, this.date, this.imageURL);
 
   factory Automobile.fromJson(Map<String, dynamic> json) {
     return Automobile(
@@ -15,7 +14,6 @@ class Automobile {
         json["date"],
         json["brand"],
         json["imageURL"],
-        json["price"]
     );
   }
 }

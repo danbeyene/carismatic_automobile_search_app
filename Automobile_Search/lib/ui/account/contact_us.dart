@@ -13,9 +13,8 @@ class ContactUsPage extends StatefulWidget {
 }
 
 class _ContactUsPageState extends State<ContactUsPage> {
-  final Color _gradientTop = const Color(0xFF039be6);
-  final Color _gradientBottom = const Color(0xFF0299e2);
-  final Color _mainColor = const Color(0xFF0181cc);
+
+  final Color _mainColor = const Color(0xFF09a59c);
   final Color _underlineColor = const Color(0xFFCCCCCC);
 
   @override
@@ -43,7 +42,7 @@ class _ContactUsPageState extends State<ContactUsPage> {
                 height: MediaQuery.of(context).size.height / 3.5,
                 decoration: BoxDecoration(
                     gradient: LinearGradient(
-                        colors: [_gradientTop, _gradientBottom],
+                        colors: [_mainColor, _mainColor],
                         begin: Alignment.topCenter,
                         end: Alignment.bottomCenter)),
               ),
@@ -222,7 +221,7 @@ class _ContactUsPageState extends State<ContactUsPage> {
                             child: Row(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[
-                                Icon(Icons.phone_android, color: _mainColor),
+                                Icon(Icons.map, color: _mainColor),
                                 const SizedBox(width: 5),
                                 Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,

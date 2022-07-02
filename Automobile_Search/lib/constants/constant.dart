@@ -5,7 +5,7 @@ this is constant pages
 import 'package:flutter/material.dart';
 
 // color for apps
-const Color PRIMARY_COLOR = Color(0xFF07ac12);
+const Color PRIMARY_COLOR = Color(0xFF10a19a);
 const Color ASSENT_COLOR = Color(0xFFe75f3f);
 
 const Color CHARCOAL = Color(0xFF515151);
