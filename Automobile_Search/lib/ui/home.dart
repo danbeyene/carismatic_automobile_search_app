@@ -4,6 +4,7 @@ import 'package:carismatic/ui/account/tab_account.dart';
 import 'package:carismatic/ui/home/tab_home.dart';
 import 'package:flashy_tab_bar2/flashy_tab_bar2.dart';
 import 'package:carismatic/constants/constant.dart';
+import 'package:carismatic/ui/home/home_screen.dart';
 
 
 class HomePage extends StatefulWidget {
@@ -18,7 +19,8 @@ class _HomePageState extends State<HomePage> {
   int _selectedPage = 0;
 
   List<Widget> pages = [
-    TabHomePage(),
+    //TabHomePage(),
+    HomeScreen(),
     TabAccountPage()
   ];
 

@@ -11,7 +11,7 @@ class SplashScreenPage extends StatefulWidget {
 class _SplashScreenPageState extends State {
   @override void initState() {
     super.initState();
-    Future.delayed( const Duration(seconds: 8), () =>
+    Future.delayed( const Duration(seconds: 5), () =>
         Navigator.pushReplacement( context,
           MaterialPageRoute(builder: (context) => const SigninPage()),
         ));

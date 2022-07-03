@@ -13,6 +13,12 @@ const Color BLACK_GREY = Color(0xff777777);
 const Color SOFT_GREY = Color(0xFFaaaaaa);
 const Color SOFT_BLUE = Color(0xff01aed6);
 
+const mainColor = Color(0xFF202e59);
+const secondaryColor = Color(0xFF6c8ee3);
+const smallTextColor = Color(0xFF2e3253);
+const textHolder = Color(0xFFedf0f8);
+const textGrey = Color(0xFFafb1b5);
+
 const String ERROR_OCCURED = 'Error occured, please try again later';
 
 const int LIMIT_PAGE = 8;
