@@ -537,7 +537,7 @@ class _TabHomePageState extends State<TabHomePage> with TickerProviderStateMixin
                     ),
                     const SizedBox(height: 20,),
                     // Enter Name
-                    const Text("Select Brand", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),),
+                    const Text("Select", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),),
                     const SizedBox(height: 10,),
                     Container(
                       margin: const EdgeInsets.symmetric(vertical: 8),
@@ -563,7 +563,7 @@ class _TabHomePageState extends State<TabHomePage> with TickerProviderStateMixin
 
                     const SizedBox(height: 10,),
                     // brand filter
-                    const Text("Select Brand", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),),
+                    const Text("Select", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),),
                     const SizedBox(height: 10,),
                     Container(
                       margin: const EdgeInsets.symmetric(vertical: 8),
@@ -589,7 +589,7 @@ class _TabHomePageState extends State<TabHomePage> with TickerProviderStateMixin
 
                     const SizedBox(height: 10,),
                     // date filter
-                    const Text('Select Date', style: TextStyle(color: Colors.black, fontSize: 18, fontWeight: FontWeight.bold),),
+                    const Text('Select', style: TextStyle(color: Colors.black, fontSize: 18, fontWeight: FontWeight.bold),),
                     const SizedBox(height: 5,),
                     Container(
                       margin: const EdgeInsets.symmetric(vertical: 8),
