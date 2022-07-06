@@ -8,7 +8,6 @@ import 'package:carismatic/constants/constant.dart';
 
 
 import 'package:carismatic/model/search_model.dart';
-import 'package:carismatic/ui/reusable/cache_image_network.dart';
 import 'package:carismatic/ui/reusable/global_function.dart';
 import 'package:carismatic/ui/reusable/global_widget.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
@@ -54,8 +53,8 @@ class _TabHomePageState extends State<TabHomePage> with TickerProviderStateMixin
   bool _isScrolled = false;
 
   List<dynamic> automobileList = [];
-  List<dynamic> bmwList = [];
-  List<dynamic> mercedesList = [];
+  List<dynamic> myList = [];
+  // List<dynamic> mercedesList = [];
 
   List _yearList = [
     "2013",
@@ -83,9 +82,9 @@ class _TabHomePageState extends State<TabHomePage> with TickerProviderStateMixin
     _etDate = TextEditingController(text: _selectedDate.toLocal().toString().split(' ')[0]);
     _scrollController = ScrollController();
     _scrollController.addListener(_listenToScrollChange);
-    automobiles();
-    bmwAutomobiles();
-    mercedesAutomobiles();
+    // automobiles();
+    myAutomobiles();
+    // mercedesAutomobiles();
 
     super.initState();
   }
@@ -115,7 +114,8 @@ class _TabHomePageState extends State<TabHomePage> with TickerProviderStateMixin
   @override
   Widget build(BuildContext context) {
     final double boxImageSize = (MediaQuery.of(context).size.width / 6);
-    return CustomScrollView(
+    return Scaffold(
+        body: CustomScrollView(
         controller: _scrollController,
         slivers: [
           SliverAppBar(
@@ -135,11 +135,12 @@ class _TabHomePageState extends State<TabHomePage> with TickerProviderStateMixin
                 title: AnimatedOpacity(
                   opacity: _isScrolled ? 0.0 : 1.0,
                   duration: const Duration(milliseconds: 500),
-                  child: FadeAnimation(1, const Text("Find your 2022 Automobiles",
+                  child: FadeAnimation(1, const Text("Your Car Collection",
                       style: TextStyle(
                         color: Colors.black,
-                        fontSize: 28.0,
-                      ))),
+                        fontSize: 25.0,
+                      ),
+                    textAlign: TextAlign.center,)),
                 ),
                 background: Image.asset("assets/images/background.png", fit: BoxFit.cover,)
             ),
@@ -173,10 +174,9 @@ class _TabHomePageState extends State<TabHomePage> with TickerProviderStateMixin
                           },
                           itemBuilder: (context, SearchModel suggestion) {
                             return ListTile(
-                              leading: ClipRRect(
+                              leading: const ClipRRect(
                                   borderRadius:
-                                  BorderRadius.all(const Radius.circular(4)),
-                                  child: buildCacheNetworkImage(width: boxImageSize, height: boxImageSize, url: suggestion.imageURL)),
+                                  BorderRadius.all(Radius.circular(4)),),
                               title: Text(suggestion.name),
                             );
                           },
@@ -199,7 +199,7 @@ class _TabHomePageState extends State<TabHomePage> with TickerProviderStateMixin
                     ),
                     child: IconButton(
                       onPressed: () {
-                        showSaveModal();
+                        showFilterModal();
                       },
                       icon: const Icon(Icons.filter_list, color: Colors.black, size: 30,),
                     ),
@@ -210,62 +210,7 @@ class _TabHomePageState extends State<TabHomePage> with TickerProviderStateMixin
           ),
           SliverList(
             delegate: SliverChildListDelegate([
-              Container(
-                  padding: const EdgeInsets.only(top: 20, left: 20),
-                  height: 330,
-                  child: Column(
-                      children: [
-                        FadeAnimation(1.4, Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: const [
-                            Text('Popular Automobiles', style: TextStyle(color: Colors.black, fontSize: 18, fontWeight: FontWeight.bold),),
-                            Padding(
-                              padding: EdgeInsets.only(right: 20.0),
-                              child: Text('See all ', style: TextStyle(color: Colors.black, fontSize: 14),),
-                            ),
-                          ],
-                        )),
-                        const SizedBox(height: 10,),
-                        Expanded(
-                            child: ListView.builder(
-                                scrollDirection: Axis.horizontal,
-                                itemCount: automobileList.length,
-                                itemBuilder: (context, index) {
-                                  return automobileBuilder(automobileList[index]);
-                                }
-                            )
-                        )
-                      ]
-                  )
-              ),
-              Container(
-                  padding: const EdgeInsets.only(top: 20, left: 20),
-                  height: 180,
-                  child: Column(
-                      children: [
-                        FadeAnimation(1.4, Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: const [
-                            Text('For You', style: TextStyle(color: Colors.black, fontSize: 18, fontWeight: FontWeight.bold),),
-                            Padding(
-                              padding: EdgeInsets.only(right: 20.0),
-                              child: Text('See all ', style: TextStyle(color: Colors.black, fontSize: 14),),
-                            ),
-                          ],
-                        )),
-                        const SizedBox(height: 10,),
-                        Expanded(
-                            child: ListView.builder(
-                                scrollDirection: Axis.horizontal,
-                                itemCount: automobileList.length,
-                                itemBuilder: (context, index) {
-                                  return forYou(automobileList[index]);
-                                }
-                            )
-                        )
-                      ]
-                  )
-              ),
+
               Container(
                   padding: const EdgeInsets.only(top: 20, left: 20),
                   height: 330,
@@ -274,7 +219,7 @@ class _TabHomePageState extends State<TabHomePage> with TickerProviderStateMixin
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: const [
-                            Text('BMW Collection', style: TextStyle(color: Colors.black, fontSize: 18, fontWeight: FontWeight.bold),),
+                            Text('My Car Collection', style: TextStyle(color: Colors.black, fontSize: 18, fontWeight: FontWeight.bold),),
                             Padding(
                               padding: EdgeInsets.only(right: 20.0),
                               child: Text('See all ', style: TextStyle(color: Colors.black, fontSize: 14),),
@@ -284,39 +229,10 @@ class _TabHomePageState extends State<TabHomePage> with TickerProviderStateMixin
                         const SizedBox(height: 10,),
                         Expanded(
                             child: ListView.builder(
-                                scrollDirection: Axis.horizontal,
-                                itemCount: bmwList.length,
+                                scrollDirection: Axis.vertical,
+                                itemCount: myList.length,
                                 itemBuilder: (context, index) {
-                                  return automobileBuilder(bmwList[index]);
-                                }
-                            )
-                        )
-                      ]
-                  )
-              ),
-              Container(
-                  padding: const EdgeInsets.only(top: 20, left: 20),
-                  height: 330,
-                  child: Column(
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: const [
-                            Text('Mercedes Collection', style: TextStyle(color: Colors.black, fontSize: 18, fontWeight: FontWeight.bold),),
-                            Padding(
-                              padding: EdgeInsets.only(right: 20.0),
-                              child: Text('See all ', style: TextStyle(color: Colors.black, fontSize: 14),),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(height: 10,),
-                        Expanded(
-                            child: ListView.builder(
-                                reverse: true,
-                                scrollDirection: Axis.horizontal,
-                                itemCount: mercedesList.length,
-                                itemBuilder: (context, index) {
-                                  return automobileBuilder(mercedesList[index]);
+                                  return automobileBuilder(myList[index]);
                                 }
                             )
                         )
@@ -324,21 +240,32 @@ class _TabHomePageState extends State<TabHomePage> with TickerProviderStateMixin
                   )
               ),
             ]),
-          )
+          ),
+
+
         ]
+    ),
+    floatingActionButton: FloatingActionButton(
+        backgroundColor: PRIMARY_COLOR,
+        onPressed: () {
+          showSaveModal();
+        },
+    tooltip: 'Increment Counter',
+    child: const Icon(Icons.add)
+    )
     );
   }
 
-  Future<void> automobiles() async {
-    final String response = await rootBundle.loadString('assets/automobiles.json');
-    final data = await json.decode(response);
-
-    setState(() {
-      automobileList = data['automobiles']
-          .map((data) => Automobile.fromJson(data)).toList();
-    });
-  }
-  Future<void> bmwAutomobiles() async {
+  // Future<void> automobiles() async {
+  //   final String response = await rootBundle.loadString('assets/automobiles.json');
+  //   final data = await json.decode(response);
+  //
+  //   setState(() {
+  //     automobileList = data['automobiles']
+  //         .map((data) => Automobile.fromJson(data)).toList();
+  //   });
+  // }
+  Future<void> myAutomobiles() async {
     final String response = await rootBundle.loadString('assets/automobiles.json');
     final decoded = await json.decode(response)['automobiles'];
     List data = decoded as List;
@@ -348,122 +275,153 @@ class _TabHomePageState extends State<TabHomePage> with TickerProviderStateMixin
 
 
     setState(() {
-      bmwList = filteredData
+      myList = filteredData
           .map((data) => Automobile.fromJson(data)).toList();
     });
   }
-  Future<void> mercedesAutomobiles() async {
-    final String response = await rootBundle.loadString('assets/automobiles.json');
-    final decoded = await json.decode(response)['automobiles'];
-    List data = decoded as List;
-    final filteredData = data.where((element) => (element['brand'] != null ? element['brand'].contains('Mercedes-Benz') : true));
 
-
-    setState(() {
-      mercedesList = filteredData
-          .map((data) => Automobile.fromJson(data)).toList();
-    });
-  }
 
   automobileBuilder(Automobile automobile) {
-    return AspectRatio(
-      aspectRatio: 1 / 1,
-      child: FadeAnimation(1.5, GestureDetector(
-        onTap: () {
-          //Navigator.push(context, MaterialPageRoute(builder: (context) => AutomobileViewPage(automobile: automobile,)));
-          Fluttertoast.showToast(msg: 'click Automobile', toastLength: Toast.LENGTH_SHORT);
-        },
-        child: Container(
-          margin: const EdgeInsets.only(right: 20, bottom: 25),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(20),
-            color: Colors.white,
-            boxShadow: [BoxShadow(
-              offset: const Offset(5, 10),
-              blurRadius: 15,
-              color: Colors.grey.shade200,
-            )],
-          ),
-          padding: const EdgeInsets.all(10),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              SizedBox(
-                height: 150,
-                child: Stack(
+    return Card(
+        elevation: 5,
+        child: ListTile(
+            title: Text(automobile.name),
+            subtitle: Text('${automobile.brand}-${automobile.model}'),
+            trailing: OutlinedButton(
+                onPressed: () {
+
+                },
+                child: const Icon(Icons.delete, color: Colors.red)
+            )));
+    // return AspectRatio(
+    //   aspectRatio: 1 / 0.5,
+    //   child: FadeAnimation(1.5, GestureDetector(
+    //     onTap: () {
+    //       //Navigator.push(context, MaterialPageRoute(builder: (context) => AutomobileViewPage(automobile: automobile,)));
+    //       Fluttertoast.showToast(msg: 'click Automobile', toastLength: Toast.LENGTH_SHORT);
+    //     },
+    //     child: Container(
+    //       margin: const EdgeInsets.only(right: 20, bottom: 25),
+    //       child: Column(
+    //         crossAxisAlignment: CrossAxisAlignment.start,
+    //         children: [
+    //           Text(automobile.name,
+    //             style: const TextStyle(color: Colors.black, fontSize: 18,),
+    //           ),
+    //           const SizedBox(height: 10,),
+    //           Row(
+    //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    //             children: [
+    //               Text(automobile.brand, style: TextStyle(color: Colors.orange.shade400, fontSize: 14,),),
+    //
+    //             ],
+    //           ),
+    //         ],
+    //       ),
+    //     ),
+    //
+    //   )),
+    // );
+  }
+
+
+  showFilterModal() {
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: Colors.white,
+      shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(topLeft: Radius.circular(20), topRight: Radius.circular(20))
+      ),
+      builder: (context) {
+        return StatefulBuilder(
+            builder: (context, setState) {
+              return Container(
+                padding: const EdgeInsets.only(top: 20, left: 20, right: 20, bottom: 20),
+                height: MediaQuery.of(context).size.height * 0.8,
+                child: ListView(
+                  //crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    SizedBox(
-                      width: double.infinity,
-                      child: ClipRRect(
-                          borderRadius: BorderRadius.circular(15),
-                          child: Image.network(automobile.imageURL, fit: BoxFit.cover)
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const Text('Filter', style: TextStyle(color: Colors.black, fontSize: 23, fontWeight: FontWeight.bold),),
+                        MaterialButton(
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                          minWidth: 40,
+                          height: 40,
+                          color: Colors.grey.shade300,
+                          elevation: 0,
+                          padding: EdgeInsets.all(0),
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(50)
+                          ),
+                          child: const Icon(Icons.close, color: Colors.black,),
+                        )
+                      ],
+                    ),
+                    const SizedBox(height: 20,),
+                    // brand filter
+                    const Text("Brand", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),),
+                    const SizedBox(height: 10,),
+                    Container(
+                      margin: const EdgeInsets.symmetric(vertical: 8),
+                      child: DropdownButtonFormField<String>(
+                        decoration: const InputDecoration(
+                          border: OutlineInputBorder(),
+                        ),
+                        hint: const Text("Select Brand"),
+                        value: _valBrand,
+                        items: _brandList.map((value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(value),
+                          );
+                        }).toList(),
+                        onChanged: (String? value) {
+                          setState(() {
+                            _valBrand = value!;
+                          });
+                        },
                       ),
                     ),
 
+                    const SizedBox(height: 10,),
+                    // model filter
+                    const Text('Model', style: TextStyle(color: Colors.black, fontSize: 18, fontWeight: FontWeight.bold),),
+                    const SizedBox(height: 5,),
+                    Container(
+                      margin: const EdgeInsets.symmetric(vertical: 8),
+                      child: DropdownButtonFormField<String>(
+                        decoration: const InputDecoration(
+                          border: OutlineInputBorder(),
+                        ),
+                        hint: const Text("Select Model"),
+                        value: _valModel,
+                        items: _modelList.map((value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(value),
+                          );
+                        }).toList(),
+                        onChanged: (String? value) {
+                          setState(() {
+                            _valModel = value!;
+                          });
+                        },
+                      ),
+                    ),
+
+
+                    const SizedBox(height: 15,),
+                    button('Filter', () {})
                   ],
                 ),
-              ),
-              const SizedBox(height: 20,),
-              Text(automobile.name,
-                style: const TextStyle(color: Colors.black, fontSize: 18,),
-              ),
-              const SizedBox(height: 10,),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(automobile.brand, style: TextStyle(color: Colors.orange.shade400, fontSize: 14,),),
-
-                ],
-              ),
-            ],
-          ),
-        ),
-      )),
-    );
-  }
-
-  forYou(Automobile automobile) {
-    return AspectRatio(
-      aspectRatio: 3 / 1,
-      child: FadeAnimation(1.5, Container(
-        margin: const EdgeInsets.only(right: 20, bottom: 25),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(20),
-          color: Colors.white,
-          boxShadow: [BoxShadow(
-            offset: const Offset(5, 10),
-            blurRadius: 15,
-            color: Colors.grey.shade200,
-          )],
-        ),
-        padding: const EdgeInsets.all(10),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            SizedBox(
-              width: 100,
-              child: ClipRRect(
-                  borderRadius: BorderRadius.circular(15),
-                  child: Image.network(automobile.imageURL, fit: BoxFit.cover)),
-            ),
-            const SizedBox(width: 10,),
-            Expanded(
-              child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(automobile.name,
-                      style: const TextStyle(color: Colors.black, fontSize: 18,),
-                    ),
-                    const SizedBox(height: 5,),
-                    Text(automobile.brand, style: TextStyle(color: Colors.orange.shade400, fontSize: 13,),),
-                    const SizedBox(height: 10,),
-                  ]
-              ),
-            )
-          ],
-        ),
-      )),
+              );
+            }
+        );
+      },
     );
   }
 
@@ -486,7 +444,7 @@ class _TabHomePageState extends State<TabHomePage> with TickerProviderStateMixin
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        const Text('Save', style: TextStyle(color: Colors.black, fontSize: 23, fontWeight: FontWeight.bold),),
+                        const Text('Add New Car', style: TextStyle(color: Colors.black, fontSize: 23, fontWeight: FontWeight.bold),),
                         MaterialButton(
                           onPressed: () {
                             Navigator.pop(context);
@@ -556,7 +514,7 @@ class _TabHomePageState extends State<TabHomePage> with TickerProviderStateMixin
                     ),
                     const SizedBox(height: 10,),
                     // date filter
-                    const Text('Date', style: TextStyle(color: Colors.black, fontSize: 18, fontWeight: FontWeight.bold),),
+                    const Text('Select Date', style: TextStyle(color: Colors.black, fontSize: 18, fontWeight: FontWeight.bold),),
                     const SizedBox(height: 5,),
                     Container(
                       margin: const EdgeInsets.symmetric(vertical: 8),

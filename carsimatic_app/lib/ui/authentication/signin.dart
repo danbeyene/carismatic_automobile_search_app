@@ -125,7 +125,7 @@ class _SigninPageState extends State<SigninPage> {
                 ),
                 onPressed: () {
                   //Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => HomePage()), (Route<dynamic> route) => false);
-                  Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const MainPage()));
+                  Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const HomePage()));
                   FocusScope.of(context).unfocus();
                 },
                 child: const Padding(

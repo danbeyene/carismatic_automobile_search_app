@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:carismatic/constants/constant.dart';
 import 'package:carismatic/constants/global_style.dart';
 
+
 class SignupPage extends StatefulWidget {
   final bool fromList;
 
@@ -241,7 +242,7 @@ class _SignupPageState extends State<SignupPage> {
                     if(widget.fromList){
                       Navigator.pop(context);
                     }
-                    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const MainPage()));
+                    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const HomePage()));
                   },
                   child: const Padding(
                     padding: EdgeInsets.symmetric(vertical: 5.0),
