@@ -6,6 +6,12 @@ import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:carismatic/constants/constant.dart';
 
+// TODO: Import google_mobile_ads.dart
+import 'package:google_mobile_ads/google_mobile_ads.dart';
+// TODO: Import ad_helper.dart
+import 'package:carismatic/ui/home/ad_helper.dart';
+
+
 
 import 'package:carismatic/model/search_model.dart';
 import 'package:carismatic/ui/reusable/global_function.dart';
@@ -15,16 +21,19 @@ import 'package:flutter_typeahead/flutter_typeahead.dart';
 class TabHomePage extends StatefulWidget {
   const TabHomePage({ Key? key }) : super(key: key);
 
+
+
   @override
   _TabHomePageState createState() => _TabHomePageState();
 }
 
 class _TabHomePageState extends State<TabHomePage> with TickerProviderStateMixin {
-  final TextEditingController _etName = TextEditingController();
-  final TextEditingController _etBrand = TextEditingController();
-  final TextEditingController _etModel = TextEditingController();
   DateTime _selectedDate = DateTime.now(), initialDate = DateTime.now();
   TextEditingController _etDate = TextEditingController();
+// TODO: Add _bannerAd
+  BannerAd? _bannerAd;
+  // COMPLETE: Add _interstitialAd
+  InterstitialAd? _interstitialAd;
 
   // initialize global widget
   final _globalWidget = GlobalWidget();
@@ -40,18 +49,18 @@ class _TabHomePageState extends State<TabHomePage> with TickerProviderStateMixin
   String? _valYear;
   String? _valBrand;
   String? _valModel;
-  List _brandList = [
+  final List _brandList = [
     "BMW",
     "Mercedes-Benz",
   ];
-  List _modelList = [
+  final List _modelList = [
     "5 Series",
     "4 Series",
     "GLA 250",
     "CLA 250",
   ];
 
-  TextEditingController _etSearch = TextEditingController();
+  final TextEditingController _etSearch = TextEditingController();
   late ScrollController _scrollController;
   bool _isScrolled = false;
 
@@ -59,26 +68,41 @@ class _TabHomePageState extends State<TabHomePage> with TickerProviderStateMixin
   List<dynamic> myList = [];
   // List<dynamic> mercedesList = [];
 
-  List _yearList = [
-    "2013",
-    "2014",
-    "2015",
-    "2016",
-    "2017",
-    "2018",
-    "2019",
-    "2020",
-    "2021",
-    "2022",
-    "2023",
-    "2024",
-  ];
 
 
-  int _selectedColor = 0;
-  int _selectedSize = 1;
 
   var selectedRange = const RangeValues(150.00, 1500.00);
+
+
+  void _moveToHome() {
+    showSaveModal();
+  }
+
+
+  // COMPLETE: Implement _loadInterstitialAd()
+  void _loadInterstitialAd() {
+    InterstitialAd.load(
+      adUnitId: AdHelper.interstitialAdUnitId,
+      request: const AdRequest(),
+      adLoadCallback: InterstitialAdLoadCallback(
+        onAdLoaded: (ad) {
+          ad.fullScreenContentCallback = FullScreenContentCallback(
+            onAdDismissedFullScreenContent: (ad) {
+              _moveToHome();
+            },
+          );
+
+          setState(() {
+            _interstitialAd = ad;
+          });
+        },
+        onAdFailedToLoad: (err) {
+          debugPrint('Failed to load an interstitial ad: ${err.message}');
+        },
+      ),
+    );
+  }
+
 
   @override
   void initState() {
@@ -89,6 +113,27 @@ class _TabHomePageState extends State<TabHomePage> with TickerProviderStateMixin
     myAutomobiles();
     // mercedesAutomobiles();
 
+
+    // COMPLETE: Load a Interstitial Ad
+    _loadInterstitialAd();
+    // TODO: Load a banner ad
+    BannerAd(
+      adUnitId: AdHelper.bannerAdUnitId,
+      request: const AdRequest(),
+      size: AdSize.banner,
+      listener: BannerAdListener(
+        onAdLoaded: (ad) {
+          setState(() {
+            _bannerAd = ad as BannerAd;
+          });
+        },
+        onAdFailedToLoad: (ad, err) {
+          print('Failed to load a banner ad: ${err.message}');
+          ad.dispose();
+        },
+      ),
+    ).load();
+
     super.initState();
   }
 
@@ -97,9 +142,20 @@ class _TabHomePageState extends State<TabHomePage> with TickerProviderStateMixin
     _etSearch.dispose();
     _etDate.dispose();
 
+    // TODO: Dispose a BannerAd object
+    _bannerAd?.dispose();
+    // TODO: Dispose a RewardedAd object
+    // TODO: Dispose an InterstitialAd object
+    _interstitialAd?.dispose();
+
     super.dispose();
   }
 
+
+  Future<InitializationStatus> _initGoogleMobileAds() {
+    // TODO: Initialize Google Mobile Ads SDK
+    return MobileAds.instance.initialize();
+  }
   void _listenToScrollChange() {
     if (_scrollController.offset >= 100.0) {
       setState(() {
@@ -118,7 +174,10 @@ class _TabHomePageState extends State<TabHomePage> with TickerProviderStateMixin
   Widget build(BuildContext context) {
     final double boxImageSize = (MediaQuery.of(context).size.width / 6);
     return Scaffold(
-        body: CustomScrollView(
+        body: SafeArea(
+        child: Stack(
+        children: [
+        CustomScrollView(
         controller: _scrollController,
         slivers: [
           SliverAppBar(
@@ -241,16 +300,32 @@ class _TabHomePageState extends State<TabHomePage> with TickerProviderStateMixin
               ),
             ]),
           ),
-
-
         ]
     ),
+          // TODO: Display a banner when ready
+          if (_bannerAd != null)
+            Align(
+              alignment: Alignment.topCenter,
+              child: SizedBox(
+                width: _bannerAd!.size.width.toDouble(),
+                height: _bannerAd!.size.height.toDouble(),
+                child: AdWidget(ad: _bannerAd!),
+              ),
+            ),
+        ],
+        ),
+        ),
+
     floatingActionButton: FloatingActionButton(
         backgroundColor: PRIMARY_COLOR,
         onPressed: () {
-          showSaveModal();
+          // TODO: Display an Interstitial Ad
+          if (_interstitialAd != null) {
+            _interstitialAd?.show();
+          }else{
+            showSaveModal();
+          }
         },
-    tooltip: 'Increment Counter',
     child: const Icon(Icons.add)
     )
     );
@@ -289,7 +364,6 @@ class _TabHomePageState extends State<TabHomePage> with TickerProviderStateMixin
             subtitle: Text('${automobile.brand}-${automobile.model}'),
             trailing: OutlinedButton(
                 onPressed: () {
-
                 },
                 child: const Icon(Icons.delete, color: Colors.red)
             )));
@@ -463,24 +537,27 @@ class _TabHomePageState extends State<TabHomePage> with TickerProviderStateMixin
                     ),
                     const SizedBox(height: 20,),
                     // Enter Name
-                    const Text("Enter Name", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),),
+                    const Text("Enter Brand", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),),
                     const SizedBox(height: 10,),
-                    TextFormField(
-                      keyboardType: TextInputType.text,
-                      controller: _etName,
-                      style: const TextStyle(color: CHARCOAL),
-                      onChanged: (textValue) {
-                        setState(() {});
-                      },
-                      decoration: const InputDecoration(
-                        focusedBorder: UnderlineInputBorder(
-                            borderSide:
-                            BorderSide(color: PRIMARY_COLOR, width: 2.0)),
-                        enabledBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(color: Color(0xFFCCCCCC)),
+                    Container(
+                      margin: const EdgeInsets.symmetric(vertical: 8),
+                      child: DropdownButtonFormField<String>(
+                        decoration: const InputDecoration(
+                          border: OutlineInputBorder(),
                         ),
-                        // labelText: 'Car Name',
-                        // labelStyle: TextStyle(color: BLACK_GREY),
+                        hint: const Text("Select Brand"),
+                        value: _valBrand,
+                        items: _brandList.map((value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(value),
+                          );
+                        }).toList(),
+                        onChanged: (String? value) {
+                          setState(() {
+                            _valBrand = value!;
+                          });
+                        },
                       ),
                     ),
 
@@ -488,47 +565,28 @@ class _TabHomePageState extends State<TabHomePage> with TickerProviderStateMixin
                     // brand filter
                     const Text("Enter Brand", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),),
                     const SizedBox(height: 10,),
-                    TextFormField(
-                      keyboardType: TextInputType.text,
-                      controller: _etBrand,
-                      style: const TextStyle(color: CHARCOAL),
-                      onChanged: (textValue) {
-                        setState(() {});
-                      },
-                      decoration: const InputDecoration(
-                        focusedBorder: UnderlineInputBorder(
-                            borderSide:
-                            BorderSide(color: PRIMARY_COLOR, width: 2.0)),
-                        enabledBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(color: Color(0xFFCCCCCC)),
+                    Container(
+                      margin: const EdgeInsets.symmetric(vertical: 8),
+                      child: DropdownButtonFormField<String>(
+                        decoration: const InputDecoration(
+                          border: OutlineInputBorder(),
                         ),
-                        // labelText: 'Brand',
-                        // labelStyle: TextStyle(color: BLACK_GREY),
+                        hint: const Text("Select Model"),
+                        value: _valModel,
+                        items: _modelList.map((value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(value),
+                          );
+                        }).toList(),
+                        onChanged: (String? value) {
+                          setState(() {
+                            _valModel = value!;
+                          });
+                        },
                       ),
                     ),
 
-                    const SizedBox(height: 10,),
-                    // model filter
-                    const Text('Enter Model', style: TextStyle(color: Colors.black, fontSize: 18, fontWeight: FontWeight.bold),),
-                    const SizedBox(height: 5,),
-                    TextFormField(
-                      keyboardType: TextInputType.text,
-                      controller: _etModel,
-                      style: const TextStyle(color: CHARCOAL),
-                      onChanged: (textValue) {
-                        setState(() {});
-                      },
-                      decoration: const InputDecoration(
-                        focusedBorder: UnderlineInputBorder(
-                            borderSide:
-                            BorderSide(color: PRIMARY_COLOR, width: 2.0)),
-                        enabledBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(color: Color(0xFFCCCCCC)),
-                        ),
-                        // labelText: 'Model',
-                        // labelStyle: TextStyle(color: BLACK_GREY),
-                      ),
-                    ),
                     const SizedBox(height: 10,),
                     // date filter
                     const Text('Select Date', style: TextStyle(color: Colors.black, fontSize: 18, fontWeight: FontWeight.bold),),
