@@ -20,6 +20,9 @@ class TabHomePage extends StatefulWidget {
 }
 
 class _TabHomePageState extends State<TabHomePage> with TickerProviderStateMixin {
+  final TextEditingController _etName = TextEditingController();
+  final TextEditingController _etBrand = TextEditingController();
+  final TextEditingController _etModel = TextEditingController();
   DateTime _selectedDate = DateTime.now(), initialDate = DateTime.now();
   TextEditingController _etDate = TextEditingController();
 
@@ -459,54 +462,71 @@ class _TabHomePageState extends State<TabHomePage> with TickerProviderStateMixin
                       ],
                     ),
                     const SizedBox(height: 20,),
-                    // brand filter
-                    const Text("Brand", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),),
+                    // Enter Name
+                    const Text("Enter Name", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),),
                     const SizedBox(height: 10,),
-                    Container(
-                      margin: const EdgeInsets.symmetric(vertical: 8),
-                      child: DropdownButtonFormField<String>(
-                        decoration: const InputDecoration(
-                          border: OutlineInputBorder(),
+                    TextFormField(
+                      keyboardType: TextInputType.text,
+                      controller: _etName,
+                      style: const TextStyle(color: CHARCOAL),
+                      onChanged: (textValue) {
+                        setState(() {});
+                      },
+                      decoration: const InputDecoration(
+                        focusedBorder: UnderlineInputBorder(
+                            borderSide:
+                            BorderSide(color: PRIMARY_COLOR, width: 2.0)),
+                        enabledBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(color: Color(0xFFCCCCCC)),
                         ),
-                        hint: const Text("Select Brand"),
-                        value: _valBrand,
-                        items: _brandList.map((value) {
-                          return DropdownMenuItem<String>(
-                            value: value,
-                            child: Text(value),
-                          );
-                        }).toList(),
-                        onChanged: (String? value) {
-                          setState(() {
-                            _valBrand = value!;
-                          });
-                        },
+                        // labelText: 'Car Name',
+                        // labelStyle: TextStyle(color: BLACK_GREY),
+                      ),
+                    ),
+
+                    const SizedBox(height: 10,),
+                    // brand filter
+                    const Text("Enter Brand", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),),
+                    const SizedBox(height: 10,),
+                    TextFormField(
+                      keyboardType: TextInputType.text,
+                      controller: _etBrand,
+                      style: const TextStyle(color: CHARCOAL),
+                      onChanged: (textValue) {
+                        setState(() {});
+                      },
+                      decoration: const InputDecoration(
+                        focusedBorder: UnderlineInputBorder(
+                            borderSide:
+                            BorderSide(color: PRIMARY_COLOR, width: 2.0)),
+                        enabledBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(color: Color(0xFFCCCCCC)),
+                        ),
+                        // labelText: 'Brand',
+                        // labelStyle: TextStyle(color: BLACK_GREY),
                       ),
                     ),
 
                     const SizedBox(height: 10,),
                     // model filter
-                    const Text('Model', style: TextStyle(color: Colors.black, fontSize: 18, fontWeight: FontWeight.bold),),
+                    const Text('Enter Model', style: TextStyle(color: Colors.black, fontSize: 18, fontWeight: FontWeight.bold),),
                     const SizedBox(height: 5,),
-                    Container(
-                      margin: const EdgeInsets.symmetric(vertical: 8),
-                      child: DropdownButtonFormField<String>(
-                        decoration: const InputDecoration(
-                          border: OutlineInputBorder(),
+                    TextFormField(
+                      keyboardType: TextInputType.text,
+                      controller: _etModel,
+                      style: const TextStyle(color: CHARCOAL),
+                      onChanged: (textValue) {
+                        setState(() {});
+                      },
+                      decoration: const InputDecoration(
+                        focusedBorder: UnderlineInputBorder(
+                            borderSide:
+                            BorderSide(color: PRIMARY_COLOR, width: 2.0)),
+                        enabledBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(color: Color(0xFFCCCCCC)),
                         ),
-                        hint: const Text("Select Model"),
-                        value: _valModel,
-                        items: _modelList.map((value) {
-                          return DropdownMenuItem<String>(
-                            value: value,
-                            child: Text(value),
-                          );
-                        }).toList(),
-                        onChanged: (String? value) {
-                          setState(() {
-                            _valModel = value!;
-                          });
-                        },
+                        // labelText: 'Model',
+                        // labelStyle: TextStyle(color: BLACK_GREY),
                       ),
                     ),
                     const SizedBox(height: 10,),
