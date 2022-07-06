@@ -537,7 +537,7 @@ class _TabHomePageState extends State<TabHomePage> with TickerProviderStateMixin
                     ),
                     const SizedBox(height: 20,),
                     // Enter Name
-                    const Text("Enter Brand", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),),
+                    const Text("Select Brand", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),),
                     const SizedBox(height: 10,),
                     Container(
                       margin: const EdgeInsets.symmetric(vertical: 8),
@@ -545,7 +545,7 @@ class _TabHomePageState extends State<TabHomePage> with TickerProviderStateMixin
                         decoration: const InputDecoration(
                           border: OutlineInputBorder(),
                         ),
-                        hint: const Text("Select Brand"),
+                        hint: const Text("Brand"),
                         value: _valBrand,
                         items: _brandList.map((value) {
                           return DropdownMenuItem<String>(
@@ -563,7 +563,7 @@ class _TabHomePageState extends State<TabHomePage> with TickerProviderStateMixin
 
                     const SizedBox(height: 10,),
                     // brand filter
-                    const Text("Enter Brand", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),),
+                    const Text("Select Brand", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),),
                     const SizedBox(height: 10,),
                     Container(
                       margin: const EdgeInsets.symmetric(vertical: 8),
@@ -571,7 +571,7 @@ class _TabHomePageState extends State<TabHomePage> with TickerProviderStateMixin
                         decoration: const InputDecoration(
                           border: OutlineInputBorder(),
                         ),
-                        hint: const Text("Select Model"),
+                        hint: const Text("Model"),
                         value: _valModel,
                         items: _modelList.map((value) {
                           return DropdownMenuItem<String>(
@@ -611,7 +611,7 @@ class _TabHomePageState extends State<TabHomePage> with TickerProviderStateMixin
                           focusedBorder: UnderlineInputBorder(
                               borderSide:
                               BorderSide(color: PRIMARY_COLOR, width: 2.0)),
-                          labelText: 'Select Date',
+                          labelText: 'Date',
                           labelStyle: TextStyle(fontSize: 22 ,color: BLACK_GREY),
                         ),
                       ),
