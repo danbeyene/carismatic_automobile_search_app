@@ -174,9 +174,6 @@ class _TabHomePageState extends State<TabHomePage> with TickerProviderStateMixin
                           },
                           itemBuilder: (context, SearchModel suggestion) {
                             return ListTile(
-                              leading: const ClipRRect(
-                                  borderRadius:
-                                  BorderRadius.all(Radius.circular(4)),),
                               title: Text(suggestion.name),
                             );
                           },
