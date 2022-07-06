@@ -181,7 +181,7 @@ class _TabHomePageState extends State<TabHomePage> with TickerProviderStateMixin
         controller: _scrollController,
         slivers: [
           SliverAppBar(
-            expandedHeight: 300.0,
+            expandedHeight: 200.0,
             elevation: 0,
             pinned: true,
             floating: true,
